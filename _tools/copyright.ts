@@ -1,8 +1,9 @@
 // Copyright 2021-Present the Tytest authors. All rights reserved. MIT license.
 import { expandGlob } from "https://deno.land/std@0.115.1/fs/mod.ts";
 
+/** get file first line */
 function getFirstLine(content: string) {
-  return (content.match(/(^.*)/) || [])[1] || "";
+  return (/(^.*)/.exec(content))?.[1] || "";
 }
 
 const copyright =
