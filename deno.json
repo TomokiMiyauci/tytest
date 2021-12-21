@@ -1,0 +1,12 @@
+{
+  "lint": {
+    "files": {
+      "exclude": ["node_modules"]
+    }
+  },
+  "fmt": {
+    "files": {
+      "exclude": ["node_modules", "CHANGELOG.md"]
+    }
+  }
+}
