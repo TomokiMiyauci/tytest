@@ -2,6 +2,9 @@ import { ts } from "../deps.ts";
 import type { Diagnostic as TSDiagnostic, Program } from "../deps.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
+const ImportPathWithExtension = 2691;
+const IgnoreDiagnosticCodes = new Set([ImportPathWithExtension]);
+
 type MatchResult = {
   fileName: string;
   message: string;
@@ -30,9 +33,25 @@ function inspect(program: Program): MatchResult[] {
     ...program
       .getSemanticDiagnostics(),
     ...program.getSyntacticDiagnostics(),
-  ].filter(({ file }) => !!file) as RequiredByKeys<TSDiagnostic, "file">[];
+  ].filter(({ file }) => !!file).filter(({ code }) =>
+    !IgnoreDiagnosticCodes.has(code)
+  ) as RequiredByKeys<TSDiagnostic, "file">[];
 
   return diagnostics.map(format);
 }
 
-export { inspect };
+function tally(
+  matchResults: readonly MatchResult[],
+): Record<string, MatchResult[]> {
+  return matchResults.reduce((acc, cur) => {
+    const fileName = cur.fileName;
+    if (fileName in acc) {
+      acc[fileName] = [...acc[fileName], cur];
+      return acc;
+    }
+    acc[fileName] = [cur];
+    return acc;
+  }, {} as Record<string, MatchResult[]>);
+}
+
+export { inspect, tally };

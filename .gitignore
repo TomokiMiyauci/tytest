@@ -5,3 +5,4 @@ node_modules
 coverage
 cov_profile.lcov
 .vercel
+tsd

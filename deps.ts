@@ -18,7 +18,4 @@ export {
   parse,
   resolve,
 } from "https://deno.land/std@0.118.0/path/mod.ts";
-export {
-  existsSync,
-  expandGlobSync,
-} from "https://deno.land/std@0.118.0/fs/mod.ts";
+export { expandGlobSync } from "https://deno.land/std@0.118.0/fs/mod.ts";
