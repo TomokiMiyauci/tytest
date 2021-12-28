@@ -2,7 +2,7 @@
   "$schema": "https://x.nest.land/eggs@0.3.10/src/schema.json",
   "name": "tytest",
   "entry": "./mod.ts",
-  "description": "🃏 Deno-first type testing framework",
+  "description": "🃏 Deno-first types testing tools",
   "homepage": "https://github.com/TomokiMiyauci/tytest",
   "files": ["./**/*.ts", "./**/*.md"],
   "version": "0.1.0",
