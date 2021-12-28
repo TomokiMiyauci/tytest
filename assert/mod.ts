@@ -1,6 +1,6 @@
 /** Check that the type of `value` is identical to type `T`.
  */
-export const expectType = <T>(_: T) => {};
+export const expectType = <T>(_: T): void => {};
 
 /** Check that the type of `value` is not identical to type `T`.
  */

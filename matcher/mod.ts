@@ -6,11 +6,17 @@ import type {
   Program,
 } from "../deps.ts";
 import { isIdentical } from "./is_identical.ts";
+import { isNotIdentical } from "./is_not_identical.ts";
 import type { Matcher } from "./types.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
 const ImportPathWithExtension = 2691;
 const IgnoreDiagnosticCodes = new Set([ImportPathWithExtension]);
+
+const assertionMap = {
+  expectType: isIdentical,
+  expectNotType: isNotIdentical,
+};
 
 type Result = {
   fileName: string;
@@ -93,13 +99,13 @@ function extractAssertions(
 
   function walkNodes(node: Node) {
     if (ts.isCallExpression(node)) {
-      const identifier = node.expression.getText();
+      const identifier = node.expression.getText() as keyof typeof assertionMap;
 
-      if (["expectType"].includes(identifier)) {
+      if (Object.keys(assertionMap).includes(identifier)) {
         assertions.push({
-          name: "expectType",
+          name: identifier,
           node,
-          matcher: isIdentical,
+          matcher: assertionMap[identifier],
         });
       }
     }
