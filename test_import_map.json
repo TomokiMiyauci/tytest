@@ -1,5 +1,5 @@
 {
   "imports": {
-    "https://deno.land/x/unitest@$VERSION/": "./"
+    "https://deno.land/x/tytest@$VERSION/": "./"
   }
 }
