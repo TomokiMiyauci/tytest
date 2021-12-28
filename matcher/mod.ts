@@ -7,6 +7,7 @@ import type {
 } from "../deps.ts";
 import { isIdentical } from "./is_identical.ts";
 import { isNotIdentical } from "./is_not_identical.ts";
+import { isNotAssignable } from "./is_not_assignable.ts";
 import type { Matcher } from "./types.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
@@ -16,6 +17,7 @@ const IgnoreDiagnosticCodes = new Set([ImportPathWithExtension]);
 const assertionMap = {
   expectType: isIdentical,
   expectNotType: isNotIdentical,
+  expectNotAssignable: isNotAssignable,
 };
 
 type Result = {
