@@ -1,11 +1,18 @@
 import { ts } from "../deps.ts";
-import type { Diagnostic as TSDiagnostic, Program } from "../deps.ts";
+import type {
+  CallExpression,
+  Diagnostic as TSDiagnostic,
+  Node,
+  Program,
+} from "../deps.ts";
+import { isIdentical } from "./is_identical.ts";
+import type { Matcher } from "./types.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
 const ImportPathWithExtension = 2691;
 const IgnoreDiagnosticCodes = new Set([ImportPathWithExtension]);
 
-type MatchResult = {
+type Result = {
   fileName: string;
   message: string;
   type: "error";
@@ -15,7 +22,7 @@ type MatchResult = {
 
 function format(
   { file, messageText, start }: RequiredByKeys<TSDiagnostic, "file">,
-): MatchResult {
+): Result {
   const position = file.getLineAndCharacterOfPosition(
     start!,
   );
@@ -28,7 +35,7 @@ function format(
   };
 }
 
-function inspect(program: Program): MatchResult[] {
+function inspect(program: Program): Result[] {
   const diagnostics = [
     ...program
       .getSemanticDiagnostics(),
@@ -36,13 +43,37 @@ function inspect(program: Program): MatchResult[] {
   ].filter(({ file }) => !!file).filter(({ code }) =>
     !IgnoreDiagnosticCodes.has(code)
   ) as RequiredByKeys<TSDiagnostic, "file">[];
+  const typeChecker = program.getTypeChecker();
 
-  return diagnostics.map(format);
+  const assertions = extractAssertions(program);
+
+  const customResults = assertions.map(({ node, matcher }) => {
+    if (!node.typeArguments) return;
+    const actual = typeChecker.getTypeFromTypeNode(node.typeArguments[0]);
+    const expected = typeChecker.getTypeAtLocation(node.arguments[0]);
+    const matchResult = matcher(typeChecker, actual, expected);
+    if (matchResult.pass) return;
+
+    const sourceFile = node.getSourceFile();
+    const position = sourceFile.getLineAndCharacterOfPosition(
+      node.getStart(),
+    );
+
+    return {
+      fileName: sourceFile.fileName,
+      message: matchResult.expected,
+      type: "error",
+      line: position.line + 1,
+      column: position.character,
+    } as Result;
+  }).filter(Boolean) as (Result)[];
+
+  return [...diagnostics.map(format), ...customResults];
 }
 
 function tally(
-  matchResults: readonly MatchResult[],
-): Record<string, MatchResult[]> {
+  matchResults: readonly Result[],
+): Record<string, Result[]> {
   return matchResults.reduce((acc, cur) => {
     const fileName = cur.fileName;
     if (fileName in acc) {
@@ -51,7 +82,36 @@ function tally(
     }
     acc[fileName] = [cur];
     return acc;
-  }, {} as Record<string, MatchResult[]>);
+  }, {} as Record<string, Result[]>);
+}
+
+function extractAssertions(
+  program: Program,
+): { name: string; node: CallExpression; matcher: Matcher }[] {
+  const assertions: { name: string; node: CallExpression; matcher: Matcher }[] =
+    [];
+
+  function walkNodes(node: Node) {
+    if (ts.isCallExpression(node)) {
+      const identifier = node.expression.getText();
+
+      if (["expectType"].includes(identifier)) {
+        assertions.push({
+          name: "expectType",
+          node,
+          matcher: isIdentical,
+        });
+      }
+    }
+
+    ts.forEachChild(node, walkNodes);
+  }
+
+  for (const sourceFile of program.getSourceFiles()) {
+    walkNodes(sourceFile);
+  }
+
+  return assertions;
 }
 
 export { inspect, tally };

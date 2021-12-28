@@ -10,6 +10,7 @@ export type {
   JSDocTagInfo,
   Node,
   Program,
+  Type,
   TypeChecker,
 } from "https://esm.sh/@tsd/typescript@4.5.4?target=deno";
 export {
