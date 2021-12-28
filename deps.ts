@@ -20,3 +20,5 @@ export {
   resolve,
 } from "https://deno.land/std@0.118.0/path/mod.ts";
 export { expandGlobSync } from "https://deno.land/std@0.118.0/fs/mod.ts";
+export { toFileUrl } from "https://deno.land/std@0.119.0/path/mod.ts";
+export { cyan, red, yellow } from "https://deno.land/std@0.119.0/fmt/colors.ts";
