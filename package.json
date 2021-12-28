@@ -1,6 +1,6 @@
 {
   "name": "tytest",
-  "description": "Deno-first types testing tools",
+  "description": "Deno-first type testing tools",
   "private": true,
   "scripts": {
     "commit": "cz",
