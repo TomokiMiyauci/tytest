@@ -6,11 +6,21 @@ function isIdentical(
   actual: Type,
   expected: Type,
 ): MatchResult {
+  if (!checker.isTypeAssignableTo(actual, expected)) {
+    return {
+      pass: false,
+      expected: `Parameter type \`${
+        checker.typeToString(actual)
+      }\` is declared too wide for argument type \`${
+        checker.typeToString(expected)
+      }\`.`,
+    };
+  }
   return {
-    pass: checker.isTypeAssignableTo(actual, expected),
+    pass: checker.isTypeIdenticalTo(actual, expected),
     expected: `Parameter type \`${
       checker.typeToString(actual)
-    }\` is declared too wide for argument type \`${
+    }\` is not identical to argument type \`${
       checker.typeToString(expected)
     }\`.`,
   };
