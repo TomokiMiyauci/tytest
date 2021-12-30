@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2021-12-30)
+
+
+### Bug Fixes
+
+* **helper:** add resolved path ([8e150b9](https://github.com/TomokiMiyauci/tytest/commit/8e150b972efee1013271684099ed8a5e337bea2c))
+
 # 1.0.0-beta.1 (2021-12-28)
 
 
