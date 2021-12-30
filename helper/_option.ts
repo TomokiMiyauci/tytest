@@ -1,5 +1,5 @@
 import type { CompilerHost, CompilerOptions } from "../deps.ts";
-import { ts } from "../deps.ts";
+import { resolve, ts } from "../deps.ts";
 
 /** make `createProgram` option */
 function makeCompilerOption(): CompilerOptions {
@@ -16,22 +16,9 @@ function makeCompilerOption(): CompilerOptions {
 function makeHostOption(): CompilerHost {
   return {
     useCaseSensitiveFileNames: () => true,
-    getDefaultLibFileName: () => "dts/lib.deno.d.ts",
-    getCurrentDirectory: () => {
-      try {
-        return Deno.cwd();
-      } catch (e) {
-        console.log(e);
-        return "";
-      }
-    },
-    readFile: (path) => {
-      try {
-        return Deno.readTextFileSync(path);
-      } catch (e) {
-        console.log(e);
-      }
-    },
+    getDefaultLibFileName: () => resolve("dts/lib.deno.d.ts"),
+    getCurrentDirectory: Deno.cwd,
+    readFile: Deno.readTextFileSync,
     getCanonicalFileName: (fileName) => fileName,
     getSourceFile: (fileName, lang) => {
       const sourceText = Deno.readTextFileSync(fileName);
