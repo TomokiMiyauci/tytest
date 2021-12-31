@@ -52,7 +52,10 @@ function inspect(program: Program): Result[] {
     ...program.getSyntacticDiagnostics(),
   ].filter(({ file }) => !!file).filter(({ code }) =>
     !IgnoreDiagnosticCodes.has(code)
-  ) as RequiredByKeys<TSDiagnostic, "file">[];
+  ).filter(({ messageText }) => {
+    // for lib.es2021.d.ts <reference lib="es2021.intl" />
+    return messageText !== "File '/lib.es2021.intl.d.ts' not found.";
+  }) as RequiredByKeys<TSDiagnostic, "file">[];
   const typeChecker = program.getTypeChecker();
 
   const assertions = extractAssertions(program);
