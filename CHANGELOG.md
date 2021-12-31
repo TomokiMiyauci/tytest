@@ -1,3 +1,10 @@
+# [1.0.0-beta.4](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2021-12-31)
+
+
+### Features
+
+* **helper:** import lib d.ts via CDN with virtual file system ([14c7a89](https://github.com/TomokiMiyauci/tytest/commit/14c7a8968876e5da380daed29abb239874e263b2))
+
 # [1.0.0-beta.3](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2021-12-31)
 
 
