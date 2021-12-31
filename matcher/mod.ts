@@ -12,11 +12,8 @@ import type { Matcher } from "./types.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
 const ImportPathWithExtension = 2691;
-// temporary
-const IgnoreArrayLength = 2536;
 const IgnoreDiagnosticCodes = new Set([
   ImportPathWithExtension,
-  IgnoreArrayLength,
 ]);
 
 const assertionMap = {

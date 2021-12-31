@@ -1,12 +1,13 @@
-import type { CompilerHost, CompilerOptions, System } from "../deps.ts";
-import { createVirtualCompilerHost, ts } from "../deps.ts";
+import type { CompilerHost, CompilerOptions } from "../deps.ts";
+import { createSystem, createVirtualCompilerHost, ts } from "../deps.ts";
 
 /** make `createProgram` option */
 function makeCompilerOption(): CompilerOptions {
   return {
-    strict: true,
-    module: ts.ModuleKind.ESNext,
     esModuleInterop: true,
+    module: ts.ModuleKind.ESNext,
+    target: ts.ScriptTarget.ESNext,
+    lib: ["dom", "esnext"],
     skipLibCheck: false,
     noEmit: true,
   };
@@ -14,11 +15,24 @@ function makeCompilerOption(): CompilerOptions {
 
 /** make `createProgram` host option */
 function makeHostOption(
-  system: System,
+  fs: Map<string, string>,
   compilerOptions: CompilerOptions,
 ): CompilerHost {
-  const host = createVirtualCompilerHost(system, compilerOptions, ts as any);
-  return host.compilerHost;
+  const system = createSystem(fs);
+  const { compilerHost } = createVirtualCompilerHost(
+    system,
+    compilerOptions,
+    ts as any,
+  );
+
+  compilerHost.getSourceFile = (fileName, lang) => {
+    const sourceText = fs.get(fileName);
+    if (sourceText) {
+      return ts.createSourceFile(fileName, sourceText, lang);
+    }
+  };
+
+  return compilerHost;
 
   // return {
   //   readFile: (fileName) => {

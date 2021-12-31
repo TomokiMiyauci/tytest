@@ -25,16 +25,15 @@ const fsMap = await createDefaultMapFromCDN(
   ts as any,
   lzstring,
 );
-const system = createSystem(fsMap);
 
 filePaths.forEach((filePath) => {
   fsMap.set(filePath, Deno.readTextFileSync(filePath));
 });
 
 const program = ts.createProgram({
-  rootNames: filePaths,
+  rootNames: [...filePaths, "/lib.es2020.full.d.ts"],
   options: compilerOptions,
-  host: makeHostOption(system, compilerOptions),
+  host: makeHostOption(fsMap, compilerOptions),
 });
 
 const inspection = inspect(program);
