@@ -1,7 +1,10 @@
 import {
   basename,
+  createDefaultMapFromCDN,
+  createSystem,
   cyan,
   expandGlobSync,
+  lzstring,
   red,
   toFileUrl,
   ts,
@@ -14,10 +17,24 @@ const filePaths = [...expandGlobSync("**/*_test.ts")].filter(({ isFile }) =>
   isFile
 ).map(({ path }) => path);
 
+const compilerOptions = makeCompilerOption();
+const fsMap = await createDefaultMapFromCDN(
+  compilerOptions,
+  ts.version,
+  true,
+  ts as any,
+  lzstring,
+);
+const system = createSystem(fsMap);
+
+filePaths.forEach((filePath) => {
+  fsMap.set(filePath, Deno.readTextFileSync(filePath));
+});
+
 const program = ts.createProgram({
   rootNames: filePaths,
-  options: makeCompilerOption(),
-  host: makeHostOption(),
+  options: compilerOptions,
+  host: makeHostOption(system, compilerOptions),
 });
 
 const inspection = inspect(program);
