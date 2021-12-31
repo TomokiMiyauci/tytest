@@ -1,3 +1,10 @@
+# [1.0.0-beta.3](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2021-12-31)
+
+
+### Bug Fixes
+
+* **matcher:** ignore declaretion lib ([d7fd601](https://github.com/TomokiMiyauci/tytest/commit/d7fd60112609380c9c0c19c8bb370765788357e1))
+
 # [1.0.0-beta.2](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2021-12-30)
 
 
