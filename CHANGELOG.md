@@ -1,3 +1,10 @@
+# [1.0.0-beta.5](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2021-12-31)
+
+
+### Bug Fixes
+
+* **matcher:** change declareation lib config to use `es2020` ([557e2f1](https://github.com/TomokiMiyauci/tytest/commit/557e2f12748168afde40322c3171bd9a4a34a1d8))
+
 # [1.0.0-beta.4](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2021-12-31)
 
 
