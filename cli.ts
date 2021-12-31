@@ -1,7 +1,6 @@
 import {
   basename,
   createDefaultMapFromCDN,
-  createSystem,
   cyan,
   expandGlobSync,
   lzstring,
