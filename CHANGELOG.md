@@ -1,3 +1,10 @@
+# [1.0.0-beta.7](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2022-01-01)
+
+
+### Bug Fixes
+
+* **helper:** set default `moduleResolution` field ([185953e](https://github.com/TomokiMiyauci/tytest/commit/185953e3a96c45d6bfcb2caaf68b3a21c028defd))
+
 # [1.0.0-beta.6](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2021-12-31)
 
 
