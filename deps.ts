@@ -7,6 +7,7 @@ export type {
   Expression,
   Identifier,
   JSDocTagInfo,
+  ModuleResolutionHost,
   Node,
   Program,
   ResolvedModule,

@@ -11,11 +11,6 @@ import { isNotAssignable } from "./is_not_assignable.ts";
 import type { Matcher } from "./types.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
-const ImportPathWithExtension = 2691;
-const IgnoreDiagnosticCodes = new Set([
-  ImportPathWithExtension,
-]);
-
 const assertionMap = {
   expectType: isIdentical,
   expectNotType: isNotIdentical,
@@ -50,9 +45,7 @@ function inspect(program: Program): Result[] {
     ...program
       .getSemanticDiagnostics(),
     ...program.getSyntacticDiagnostics(),
-  ].filter(({ file }) => !!file).filter(({ code }) =>
-    !IgnoreDiagnosticCodes.has(code)
-  ).filter(({ messageText }) => {
+  ].filter(({ file }) => !!file).filter(({ messageText }) => {
     // for lib.es2021.d.ts <reference lib="es2021.intl" />
     return messageText !== "File '/lib.es2021.intl.d.ts' not found.";
   }) as RequiredByKeys<TSDiagnostic, "file">[];

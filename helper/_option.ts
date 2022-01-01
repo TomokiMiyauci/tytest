@@ -1,12 +1,22 @@
 import type { CompilerHost, CompilerOptions } from "../deps.ts";
-import { createSystem, createVirtualCompilerHost, ts } from "../deps.ts";
+import { ts } from "../deps.ts";
+import {
+  directoryExists,
+  fileExists,
+  getCanonicalFileName,
+  getCurrentDirectory,
+  getNewLine,
+  makeResolveModuleNames,
+  readFile,
+  useCaseSensitiveFileNames,
+  writeFile,
+} from "./_runtime.ts";
 
 /** make `createProgram` option */
 function makeCompilerOption(): CompilerOptions {
   return {
     esModuleInterop: true,
     module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.NodeNext,
     target: ts.ScriptTarget.ESNext,
     lib: ["dom", "esnext"],
     skipLibCheck: false,
@@ -16,64 +26,36 @@ function makeCompilerOption(): CompilerOptions {
 
 /** make `createProgram` host option */
 function makeHostOption(
-  fs: Map<string, string>,
+  libMap: Map<string, string>,
   compilerOptions: CompilerOptions,
 ): CompilerHost {
-  const system = createSystem(fs);
-  const { compilerHost } = createVirtualCompilerHost(
-    system,
-    compilerOptions,
-    ts as any,
-  );
-
-  compilerHost.getSourceFile = (fileName, lang) => {
-    const sourceText = fs.get(fileName);
-    if (sourceText) {
-      return ts.createSourceFile(fileName, sourceText, lang);
-    }
+  return {
+    readFile,
+    useCaseSensitiveFileNames,
+    getDefaultLibFileName: () => "/lib.deno.d.ts",
+    getCurrentDirectory,
+    getCanonicalFileName,
+    getSourceFile: (fileName, lang) => {
+      const dtsPath = `/lib.${fileName.slice(1)}`;
+      if (libMap.has(dtsPath)) {
+        return ts.createSourceFile(dtsPath, libMap.get(dtsPath)!, lang);
+      }
+      if (libMap.has(fileName)) {
+        return ts.createSourceFile(fileName, libMap.get(fileName)!, lang);
+      }
+      try {
+        const sourceText = Deno.readTextFileSync(fileName);
+        return ts.createSourceFile(fileName, sourceText, lang);
+      } catch {
+        return;
+      }
+    },
+    directoryExists,
+    fileExists,
+    writeFile,
+    getNewLine,
+    resolveModuleNames: makeResolveModuleNames(compilerOptions),
   };
-
-  return compilerHost;
-
-  // return {
-  //   readFile: (fileName) => {
-  //     console.log(fileName);
-
-  //     return Deno.readTextFileSync(fileName);
-  //   },
-  //   useCaseSensitiveFileNames: () => true,
-  //   getDefaultLibFileName: () => "/dom.d.ts",
-  //   getCurrentDirectory: Deno.cwd,
-  //   getCanonicalFileName: (fileName) => fileName,
-  //   getSourceFile: (fileName, lang) => {
-  //     const sourceText = Deno.readTextFileSync(fileName);
-  //     return ts.createSourceFile(fileName, sourceText, lang);
-  //   },
-  //   directoryExists: (filePath) => {
-  //     try {
-  //       const { isDirectory } = Deno.lstatSync(filePath);
-  //       return isDirectory;
-  //     } catch (e) {
-  //       if (e instanceof Deno.errors.NotFound) {
-  //         return false;
-  //       }
-  //       throw e;
-  //     }
-  //   },
-  //   fileExists: (filePath) => {
-  //     try {
-  //       const { isFile } = Deno.lstatSync(filePath);
-  //       return isFile;
-  //     } catch (e) {
-  //       if (e instanceof Deno.errors.NotFound) {
-  //         return false;
-  //       }
-  //       throw e;
-  //     }
-  //   },
-  //   writeFile: (fileName, data) => Deno.writeTextFileSync(fileName, data),
-  //   getNewLine: () => "\n",
-  // };
 }
 
 export { makeCompilerOption, makeHostOption };

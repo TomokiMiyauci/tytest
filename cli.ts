@@ -11,7 +11,7 @@ import {
 } from "./deps.ts";
 import { makeCompilerOption, makeHostOption } from "./helper/_option.ts";
 import { inspect, tally } from "./matcher/mod.ts";
-import { DTS } from "./dts/lib.deno.ts";
+import { libDeno } from "./dts/lib.deno.ts";
 
 const filePaths = [...expandGlobSync("**/*_test.ts")].filter(({ isFile }) =>
   isFile
@@ -26,13 +26,10 @@ const fsMap = await createDefaultMapFromCDN(
   lzstring,
 );
 
-filePaths.forEach((filePath) => {
-  fsMap.set(filePath, Deno.readTextFileSync(filePath));
-});
-fsMap.set("/lib.deno.d.ts", DTS);
+fsMap.set("/lib.deno.d.ts", libDeno);
 
 const program = ts.createProgram({
-  rootNames: [...filePaths, "/lib.deno.d.ts"],
+  rootNames: [...filePaths],
   options: compilerOptions,
   host: makeHostOption(fsMap, compilerOptions),
 });
