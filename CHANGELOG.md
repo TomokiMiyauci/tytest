@@ -1,3 +1,10 @@
+# [1.0.0-beta.6](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2021-12-31)
+
+
+### Features
+
+* **matcher:** includes deno namespace declareration files ([92bd611](https://github.com/TomokiMiyauci/tytest/commit/92bd6116200a6fd646986fc3d95bbfdcf8df6c11))
+
 # [1.0.0-beta.5](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2021-12-31)
 
 
