@@ -6,6 +6,7 @@ function makeCompilerOption(): CompilerOptions {
   return {
     esModuleInterop: true,
     module: ts.ModuleKind.ESNext,
+    moduleResolution: ts.ModuleResolutionKind.NodeNext,
     target: ts.ScriptTarget.ESNext,
     lib: ["dom", "esnext"],
     skipLibCheck: false,

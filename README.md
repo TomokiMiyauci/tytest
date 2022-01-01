@@ -24,7 +24,7 @@ expectType<string>("");
 
 then,
 
-`deno run https://deno.land/x/tytest@$VERSION/cli.ts`
+`deno run --unstable --allow-read --allow-write --allow-net https://deno.land/x/tytest@$VERSION/cli.ts`
 
 ## License
 
