@@ -1,3 +1,10 @@
+# [1.0.0-beta.8](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2022-01-01)
+
+
+### Bug Fixes
+
+* **matcher:** resolve `.ts` import path as Node.js style ([e7c526a](https://github.com/TomokiMiyauci/tytest/commit/e7c526a38fb88eb2510162cf77129a3b9b628216))
+
 # [1.0.0-beta.7](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2022-01-01)
 
 
