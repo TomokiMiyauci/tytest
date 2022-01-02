@@ -1,3 +1,10 @@
+# [1.0.0-beta.14](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2022-01-02)
+
+
+### Bug Fixes
+
+* **matcher:** add ignore diagnostics code for remote module ([c7a2d68](https://github.com/TomokiMiyauci/tytest/commit/c7a2d688f580488d7848404ad69fb55ef3ec5c93))
+
 # [1.0.0-beta.13](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2022-01-02)
 
 
