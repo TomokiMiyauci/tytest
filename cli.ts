@@ -28,43 +28,39 @@ const fsMap = await createDefaultMapFromCDN(
 
 fsMap.set("/lib.deno.d.ts", libDeno);
 
-try {
-  const program = ts.createProgram({
-    rootNames: [...filePaths],
-    options: compilerOptions,
-    host: makeHostOption(fsMap, compilerOptions),
+const program = ts.createProgram({
+  rootNames: [...filePaths],
+  options: compilerOptions,
+  host: makeHostOption(fsMap, compilerOptions),
+});
+
+const inspection = inspect(program);
+const results = Object.entries(tally(inspection));
+
+if (0 < results.length) {
+  results.forEach(([filePath, matchResults]) => {
+    console.error(basename(filePath));
+    console.group();
+    matchResults.forEach(({ message, line, column, fileName }) => {
+      console.error(
+        message,
+      );
+
+      console.error(
+        "at",
+        `${cyan(toFileUrl(fileName).href)}:${yellow(String(line))}:${
+          yellow(String(column))
+        }`,
+      );
+    });
+    console.groupEnd();
   });
 
-  const inspection = inspect(program);
-  const results = Object.entries(tally(inspection));
+  const errors = results.reduce(
+    (acc, [_, cur]) => cur.reduce((acc2) => acc2 + 1, acc),
+    0,
+  );
 
-  if (0 < results.length) {
-    results.forEach(([filePath, matchResults]) => {
-      console.error(basename(filePath));
-      console.group();
-      matchResults.forEach(({ message, line, column, fileName }) => {
-        console.error(
-          message,
-        );
-
-        console.error(
-          "at",
-          `${cyan(toFileUrl(fileName).href)}:${yellow(String(line))}:${
-            yellow(String(column))
-          }`,
-        );
-      });
-      console.groupEnd();
-    });
-
-    const errors = results.reduce(
-      (acc, [_, cur]) => cur.reduce((acc2) => acc2 + 1, acc),
-      0,
-    );
-
-    console.error("\n" + red(`${errors} error${errors > 0 ? "s" : ""}`));
-    Deno.exit(1);
-  }
-} catch (e) {
-  console.log(e);
+  console.error("\n" + red(`${errors} error${errors > 0 ? "s" : ""}`));
+  Deno.exit(1);
 }

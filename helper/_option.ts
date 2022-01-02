@@ -6,7 +6,6 @@ import {
   getCanonicalFileName,
   getCurrentDirectory,
   getNewLine,
-  makeResolveModuleNames,
   readFile,
   useCaseSensitiveFileNames,
   writeFile,
@@ -28,7 +27,7 @@ function makeHostOption(
   libMap: Map<string, string>,
   compilerOptions: CompilerOptions,
 ): CompilerHost {
-  console.log(libMap);
+  console.log(libMap, compilerOptions);
   return {
     readFile,
     useCaseSensitiveFileNames,
@@ -43,6 +42,7 @@ function makeHostOption(
       const sourceText = Deno.readTextFileSync(fileName);
       return ts.createSourceFile(fileName, sourceText, lang);
     },
+    directoryExists,
     fileExists,
     writeFile,
     getNewLine,
