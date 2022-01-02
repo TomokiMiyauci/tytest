@@ -26,6 +26,20 @@ then,
 
 `deno run --unstable --allow-read --allow-write --allow-net https://deno.land/x/tytest@$VERSION/cli.ts`
 
+## Known Issues
+
+The custom module resolver is not implemented, so it does not work correctly for
+remote modules. This is a priority issue.
+
+For example, the following module will be processed as `any`.
+
+```ts
+import { join } from "https://deno.land/std@0.119.0/path/mod.ts";
+import { expectType } from "https://deno.land/x/tytest@$VERSION/mod.ts";
+
+expectType<string>(join(""));
+```
+
 ## License
 
 Copyright © 2021-present [TomokiMiyauci](https://github.com/TomokiMiyauci).

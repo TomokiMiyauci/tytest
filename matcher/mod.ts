@@ -12,7 +12,8 @@ import type { Matcher } from "./types.ts";
 import type { RequiredByKeys } from "../_types.ts";
 
 const IS_NOT_MODULE = 2306;
-const ignoreDiagnosticsCodes = new Set([IS_NOT_MODULE]);
+const NO_EXPORTED_MEMBER = 2305;
+const ignoreDiagnosticsCodes = new Set([IS_NOT_MODULE, NO_EXPORTED_MEMBER]);
 
 const assertionMap = {
   expectType: isIdentical,
