@@ -1,3 +1,10 @@
+# [1.0.0-beta.11](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2022-01-02)
+
+
+### Bug Fixes
+
+* **helper:** remove `moduleResolution` and add debug ([33ed285](https://github.com/TomokiMiyauci/tytest/commit/33ed285b5b3cc0ca9885ffa888fd8fc16f32e2f7))
+
 # [1.0.0-beta.10](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2022-01-02)
 
 
