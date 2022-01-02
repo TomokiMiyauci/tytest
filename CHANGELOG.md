@@ -1,3 +1,10 @@
+# [1.0.0-beta.9](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2022-01-02)
+
+
+### Bug Fixes
+
+* **helper:** change default tsconfig ([c776e56](https://github.com/TomokiMiyauci/tytest/commit/c776e56d5899f27d448c404e18b6e4b2e2339b90))
+
 # [1.0.0-beta.8](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2022-01-01)
 
 
