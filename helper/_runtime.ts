@@ -2,7 +2,6 @@ import type {
   CompilerHost,
   CompilerOptions,
   ModuleResolutionHost,
-  ResolvedModule,
 } from "../deps.ts";
 import { ts } from "../deps.ts";
 
@@ -93,17 +92,32 @@ type ResolveModuleNames = Exclude<
   undefined
 >;
 
+const reRemoteModule = /^https?:\/\//;
+
+function remoteModuleExists(value: string[]): boolean {
+  return value.some((v) => reRemoteModule.test(v));
+}
+
 function makeResolveModuleNames(
   compilerOptions: CompilerOptions,
 ): typeof resolveModuleNames {
   function resolveModuleNames(
     ...[moduleNames, containingFile]: Parameters<ResolveModuleNames>
   ): ReturnType<ResolveModuleNames> {
-    const resolvedModules: ResolvedModule[] = [];
+    const tmpPath = remoteModuleExists(moduleNames)
+      ? (() =>
+        Deno.makeTempFileSync({
+          suffix: ".ts",
+        }))()
+      : undefined;
 
-    for (const moduleName of moduleNames.map(removeTsExtension)) {
-      const result = ts.resolveModuleName(
-        moduleName,
+    return moduleNames.map((moduleName) => {
+      const fixedModulePath = reRemoteModule.test(moduleName)
+        ? removeTsExtension(tmpPath!)
+        : removeTsExtension(moduleName);
+
+      const { resolvedModule } = ts.resolveModuleName(
+        fixedModulePath,
         containingFile,
         compilerOptions,
         {
@@ -115,18 +129,9 @@ function makeResolveModuleNames(
           realpath,
         },
       );
-      console.log({
-        moduleName,
-        containingFile,
-        compilerOptions,
-        result,
-      });
-      if (result.resolvedModule) {
-        resolvedModules.push(result.resolvedModule);
-      }
-    }
 
-    return resolvedModules;
+      return resolvedModule;
+    });
   }
   return resolveModuleNames;
 }

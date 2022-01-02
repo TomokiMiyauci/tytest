@@ -28,7 +28,6 @@ function makeHostOption(
   libMap: Map<string, string>,
   compilerOptions: CompilerOptions,
 ): CompilerHost {
-  console.log(libMap, compilerOptions);
   return {
     readFile,
     useCaseSensitiveFileNames,
