@@ -1,3 +1,10 @@
+# [1.0.0-beta.12](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2022-01-02)
+
+
+### Bug Fixes
+
+* **helper:** add `resolveModuleNames` field for host options ([92a9730](https://github.com/TomokiMiyauci/tytest/commit/92a973017d0d49896589cebd1b74efc841bbd992))
+
 # [1.0.0-beta.11](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2022-01-02)
 
 
