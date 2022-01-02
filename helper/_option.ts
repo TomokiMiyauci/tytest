@@ -28,6 +28,7 @@ function makeHostOption(
   libMap: Map<string, string>,
   compilerOptions: CompilerOptions,
 ): CompilerHost {
+  console.log(libMap);
   return {
     readFile,
     useCaseSensitiveFileNames,
@@ -35,17 +36,16 @@ function makeHostOption(
     getCurrentDirectory,
     getCanonicalFileName,
     getSourceFile: (fileName, lang) => {
+      console.log(fileName, lang);
       if (libMap.has(fileName)) {
         return ts.createSourceFile(fileName, libMap.get(fileName)!, lang);
       }
       const sourceText = Deno.readTextFileSync(fileName);
       return ts.createSourceFile(fileName, sourceText, lang);
     },
-    directoryExists,
     fileExists,
     writeFile,
     getNewLine,
-    resolveModuleNames: makeResolveModuleNames(compilerOptions),
   };
 }
 
