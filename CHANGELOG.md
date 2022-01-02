@@ -1,3 +1,10 @@
+# [1.0.0-beta.13](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2022-01-02)
+
+
+### Features
+
+* **matcher:** add custom module resolver for remote module ([8ee5af0](https://github.com/TomokiMiyauci/tytest/commit/8ee5af0ab76b783a882c542bb8312216e1d91a09))
+
 # [1.0.0-beta.12](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2022-01-02)
 
 
