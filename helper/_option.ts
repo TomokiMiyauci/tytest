@@ -17,8 +17,7 @@ function makeCompilerOption(): CompilerOptions {
   return {
     esModuleInterop: true,
     module: ts.ModuleKind.ESNext,
-    target: ts.ScriptTarget.ESNext,
-    lib: ["dom", "esnext"],
+    target: ts.ScriptTarget.ES2021,
     skipLibCheck: false,
     noEmit: true,
   };
@@ -32,23 +31,15 @@ function makeHostOption(
   return {
     readFile,
     useCaseSensitiveFileNames,
-    getDefaultLibFileName: () => "/lib.deno.d.ts",
+    getDefaultLibFileName: () => "/lib.d.ts",
     getCurrentDirectory,
     getCanonicalFileName,
     getSourceFile: (fileName, lang) => {
-      const dtsPath = `/lib.${fileName.slice(1)}`;
-      if (libMap.has(dtsPath)) {
-        return ts.createSourceFile(dtsPath, libMap.get(dtsPath)!, lang);
-      }
       if (libMap.has(fileName)) {
         return ts.createSourceFile(fileName, libMap.get(fileName)!, lang);
       }
-      try {
-        const sourceText = Deno.readTextFileSync(fileName);
-        return ts.createSourceFile(fileName, sourceText, lang);
-      } catch {
-        return;
-      }
+      const sourceText = Deno.readTextFileSync(fileName);
+      return ts.createSourceFile(fileName, sourceText, lang);
     },
     directoryExists,
     fileExists,
