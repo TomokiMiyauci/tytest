@@ -6,6 +6,7 @@ import {
   getCanonicalFileName,
   getCurrentDirectory,
   getNewLine,
+  makeResolveModuleNames,
   readFile,
   useCaseSensitiveFileNames,
   writeFile,
@@ -35,7 +36,6 @@ function makeHostOption(
     getCurrentDirectory,
     getCanonicalFileName,
     getSourceFile: (fileName, lang) => {
-      console.log(fileName, lang);
       if (libMap.has(fileName)) {
         return ts.createSourceFile(fileName, libMap.get(fileName)!, lang);
       }
@@ -46,6 +46,7 @@ function makeHostOption(
     fileExists,
     writeFile,
     getNewLine,
+    resolveModuleNames: makeResolveModuleNames(compilerOptions),
   };
 }
 

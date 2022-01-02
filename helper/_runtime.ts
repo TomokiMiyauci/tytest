@@ -83,6 +83,11 @@ function removeTsExtension(moduleName: string) {
   return moduleName;
 }
 
+type Realpath = Exclude<ModuleResolutionHost["realpath"], undefined>;
+function realpath(...[pathName]: Parameters<Realpath>): ReturnType<Realpath> {
+  return Deno.realPathSync(pathName);
+}
+
 type ResolveModuleNames = Exclude<
   CompilerHost["resolveModuleNames"],
   undefined
@@ -107,8 +112,15 @@ function makeResolveModuleNames(
           getCurrentDirectory,
           directoryExists,
           fileExists,
+          realpath,
         },
       );
+      console.log({
+        moduleName,
+        containingFile,
+        compilerOptions,
+        result,
+      });
       if (result.resolvedModule) {
         resolvedModules.push(result.resolvedModule);
       }
