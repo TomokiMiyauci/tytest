@@ -1,3 +1,10 @@
+# [1.0.0-beta.10](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2022-01-02)
+
+
+### Bug Fixes
+
+* **matcher:** add try catch block for debug ([edfcb5e](https://github.com/TomokiMiyauci/tytest/commit/edfcb5e9967c14b0e6ab4ea89a038d5303a49e53))
+
 # [1.0.0-beta.9](https://github.com/TomokiMiyauci/tytest/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2022-01-02)
 
 
