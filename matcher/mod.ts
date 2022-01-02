@@ -98,19 +98,24 @@ function extractAssertions(
     [];
 
   function walkNodes(node: Node) {
-    if (ts.isCallExpression(node)) {
-      const identifier = node.expression.getText() as keyof typeof assertionMap;
+    try {
+      if (ts.isCallExpression(node)) {
+        const identifier = node.expression
+          .getText() as keyof typeof assertionMap;
 
-      if (Object.keys(assertionMap).includes(identifier)) {
-        assertions.push({
-          name: identifier,
-          node,
-          matcher: assertionMap[identifier],
-        });
+        if (Object.keys(assertionMap).includes(identifier)) {
+          assertions.push({
+            name: identifier,
+            node,
+            matcher: assertionMap[identifier],
+          });
+        }
       }
-    }
 
-    ts.forEachChild(node, walkNodes);
+      ts.forEachChild(node, walkNodes);
+    } catch (e) {
+      throw e;
+    }
   }
 
   for (const sourceFile of program.getSourceFiles()) {
